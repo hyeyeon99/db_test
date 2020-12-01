@@ -1,5 +1,6 @@
-const express = require('express');
-const router = express.Router();
+const { Router } = require('express');
+const router = Router();
+const ctrl = require('./products.ctrl');
 const models = require('../../models');
 
 router.get('/:id' , async(req, res) => {
