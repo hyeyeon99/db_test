@@ -1,0 +1,61 @@
+{% set title = "쇼핑몰 메인화면" %} {% extends "layout/base.html" %} {% block
+content -%}
+
+<div class="container" id="masonry_container">
+  {% for product in products %}
+  <div class="masonry-grid">
+    <a href="/products/{{ product.id }}">
+      {% if product.thumbnail %}
+      <img src="/uploads/{{ product.thumbnail }}" />
+      {% endif %}
+      <p>
+        {{ product.name }}<br />
+        by {{ product.Owner.displayname }} ( {{ product.dateFormat(
+        product.createdAt ) }} )
+      </p>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+<div class="search float_right">
+  <form class="checkValidation" action="/posts/" id="search">
+    <select name="searchType">
+      <option value="title,body">제목+내용</option>
+      <option value="title">제목</option>
+      <option value="body">내용</option>
+      <option value="author">작성자</option>
+    </select>
+    <input
+      class="cvMinLength"
+      cvminlength="3"
+      cvminlenerrto="#searchError"
+      cvminlenerrmsg="It should be at least 3 characters"
+      type="text"
+      name="searchText"
+      value=""
+    />
+    <input class="button" type="submit" value="검색" />
+    <div class="message" id="searchError"></div>
+  </form>
+</div>
+
+<style type="text/css">
+  .masonry-grid img {
+    max-width: 260px;
+  }
+</style>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"
+></script>
+<script type="text/javascript">
+  var $masonry_container = $("#masonry_container");
+  $masonry_container.imagesLoaded(function () {
+    $masonry_container.masonry({
+      itemSelector: ".masonry-grid",
+      columnWidth: 270,
+    });
+  });
+</script>
+{% endblock %}
